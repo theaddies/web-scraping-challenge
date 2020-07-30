@@ -1,2 +1,8 @@
 background/
 chromedriver.exe
+geckodriver.exe
+firefox_test.ipynb
+geckodriver.log
+test.py
+untitled.ipynb
+upgrade-pip.py
