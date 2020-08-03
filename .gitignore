@@ -6,3 +6,7 @@ geckodriver.log
 test.py
 untitled.ipynb
 upgrade-pip.py
+testing/
+importcsv.py
+mars_data.csv
+read_csv_to_dict.ipynb
