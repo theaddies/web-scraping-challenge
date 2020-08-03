@@ -8,7 +8,7 @@ from splinter import Browser
 import requests
 import re
 import pandas as pd
-
+import time
 
 
 def scrape():
@@ -55,30 +55,26 @@ def scrape():
 
     featured_image_url
 
+    mars_weather = ''
     url = 'https://twitter.com/marswxreport?lang=en'
     browser.visit(url)
-
+    time.sleep(5)
+    browser.reload()
+    time.sleep(5)
     html = browser.html
+    time.sleep(5)
     soup = BeautifulSoup(html, 'html.parser')
-
-    results = soup.find_all('span')
-    mars_weather = ""
-    test_variable = ''
-    i=0
+    time.sleep(5)
+    results = soup.find('div', class_= 'css-1dbjc4n').find_all('span', class_ ="css-901oao css-16my406 r-1qd0xha r-ad9z0x r-bcqeeo r-qvutc0")
     found = False
     for result in results:
-        i=i+1
- #       if (('InSight sol' in result.text) & ('C' in result.text) &  (not found)):
-        if (('InSight sol' in result.text) &  (not found)):
-            test_variable = result.text
-            test_variable = result.text
-            mars_weather = result.text
+        if (bool(result.find(string=re.compile("InSight"))) & (not found)):
+            mars_weather = result.find(string=re.compile("InSight"))
+            print(mars_weather)
             found = True
-
-    mars_weather
-    print(test_variable)
-    print(results)
     print(mars_weather)
+
+
 
     mars_facts_url = 'https://space-facts.com/mars/'
 
