@@ -9,6 +9,8 @@ import requests
 import re
 import pandas as pd
 
+
+
 def scrape():
     executable_path = {'executable_path': 'c:\\Users\\thead\\anaconda3\\bin\\chromedriver.exe'}
     browser = Browser('chrome', **executable_path, headless=False)
@@ -19,24 +21,15 @@ def scrape():
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
 
-    results = soup.find_all("div", class_= "image_and_description_container")
-    print(results)
+    try:
+        slide_elem = soup.select_one("ul.item_list li.slide")
+        # Use the parent element to find the first 'a' tag and save it as 'news_title'
+        news_title = slide_elem.find("div", class_="content_title").get_text()
+        # Use the parent element to find the paragraph text
+        news_p = slide_elem.find("div", class_="article_teaser_body").get_text()
+    except AttributeError:
+        return None, None
 
-    news_title = []
-    news_p = []
-    for result in results:
-        #print(result)
-        try:
-            news_title.append(result.find("div", class_='content_title').text)
-        except:
-            print("")
-        try:
-            news_p.append(result.find("div", class_='article_teaser_body').text)
-        except:
-            print("")
-
-    print(news_title)
-    print(news_p)
     url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
     browser.visit(url)
 
@@ -69,17 +62,22 @@ def scrape():
     soup = BeautifulSoup(html, 'html.parser')
 
     results = soup.find_all('span')
-
+    mars_weather = ""
+    test_variable = ''
     i=0
     found = False
     for result in results:
         i=i+1
-        if (('low' in result.text) & ('C' in result.text) &  (not found)):
+ #       if (('InSight sol' in result.text) & ('C' in result.text) &  (not found)):
+        if (('InSight sol' in result.text) &  (not found)):
+            test_variable = result.text
+            test_variable = result.text
             mars_weather = result.text
             found = True
 
     mars_weather
-
+    print(test_variable)
+    print(results)
     print(mars_weather)
 
     mars_facts_url = 'https://space-facts.com/mars/'
@@ -136,3 +134,5 @@ def scrape():
     mars_data = {'news_title' : news_title, 'news_p' : news_p, 'featured_image_url' : featured_image_url,  'mars_weather' : mars_weather, 'mars_facts' : facts_df_html, 'hemisphere_name' : hemisphere_name, 'enhanced_hemisphere_link' : enhanced_hemisphere_link}
     print(mars_data)
     return mars_data
+mars_data = scrape()
+print(mars_data)
