@@ -10,7 +10,6 @@ import re
 import pandas as pd
 
 def scrape():
-    global news_title, news_p, mars_facts
     executable_path = {'executable_path': 'c:\\Users\\thead\\anaconda3\\bin\\chromedriver.exe'}
     browser = Browser('chrome', **executable_path, headless=False)
 
